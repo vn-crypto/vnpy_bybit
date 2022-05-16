@@ -1569,7 +1569,9 @@ class BybitUsdtPublicWebsocketApi(WebsocketClient):
 
         if self.subscribed:
             for req in self.subscribed.values():
-                self.subscribe(req)
+                # 重新订阅请求
+                self.subscribe_topic(f"instrument_info.100ms.{req.symbol}", self.on_tick)
+                self.subscribe_topic(f"orderBookL2_25.{req.symbol}", self.on_depth)
 
     def on_disconnected(self) -> None:
         """连接断开回报"""
